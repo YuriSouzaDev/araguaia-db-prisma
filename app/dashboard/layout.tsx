@@ -1,5 +1,5 @@
-import HeaderNav from '@/app/components/HeaderNav/HeaderNav';
-import SideNav from '@/app/components/SideNav/SideNav';
+import HeaderNav from '@/components/HeaderNav/HeaderNav';
+import SideNav from '@/components/SideNav/SideNav';
 
 interface DashboardLayout {
   children: React.ReactNode;

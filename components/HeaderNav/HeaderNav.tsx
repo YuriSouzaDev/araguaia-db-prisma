@@ -1,9 +1,5 @@
 import { userGet } from '@/actions/user-get';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/app/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const HeaderNav = async () => {
   const { data } = await userGet();

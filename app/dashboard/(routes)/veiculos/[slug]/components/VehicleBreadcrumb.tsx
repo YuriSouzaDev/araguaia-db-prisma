@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/app/components/ui/breadcrumb';
+} from '@/components/ui/breadcrumb';
 import { useRouter } from 'next/navigation';
 
 const VehicleBreadcrumb = () => {

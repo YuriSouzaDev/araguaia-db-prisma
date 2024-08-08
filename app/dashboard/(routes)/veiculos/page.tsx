@@ -1,4 +1,4 @@
-import NewItemButton from '@/app/components/shared/NewItemButton';
+import NewItemButton from '@/components/shared/NewItemButton';
 
 const Vehicles = () => {
   return (

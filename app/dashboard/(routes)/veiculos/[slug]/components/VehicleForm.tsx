@@ -1,10 +1,10 @@
 'use client';
 
-import { CurrencyWithLabel } from '@/app/components/shared/currency-with-label';
-import CustomSelect from '@/app/components/shared/custom-select';
-import { InputWithLabel } from '@/app/components/shared/input-with-label';
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
+import { CurrencyWithLabel } from '@/components/shared/currency-with-label';
+import CustomSelect from '@/components/shared/custom-select';
+import { InputWithLabel } from '@/components/shared/input-with-label';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import OptionalInput from './OptionalInput';
 

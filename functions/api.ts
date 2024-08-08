@@ -20,9 +20,9 @@ export function USER_GET() {
   };
 }
 
-export function VEHICLE_POST() {
+export function BRAND_POST() {
   return {
-    url: API_URL + '/api/v1/veiculo',
+    url: API_URL + '/brands',
   };
 }
 

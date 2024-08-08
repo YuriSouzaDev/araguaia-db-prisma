@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
   if (!email || !password) {
     return new NextResponse(
-      JSON.stringify({ message: 'Email and password are required' }),
+      JSON.stringify({ message: 'Email e senha são requeridos.' }),
       {
         status: 400,
         statusText: 'Bad Request',

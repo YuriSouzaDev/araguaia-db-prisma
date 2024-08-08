@@ -4,11 +4,11 @@ import { cn } from '@/lib/utils';
 
 export interface InputWithLabelProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  id: string;
+  label?: string;
+  id?: string;
   multiple?: boolean;
-  loading: boolean;
-  name: string;
+  loading?: boolean;
+  name?: string;
 }
 
 const InputWithLabel = React.forwardRef<HTMLInputElement, InputWithLabelProps>(

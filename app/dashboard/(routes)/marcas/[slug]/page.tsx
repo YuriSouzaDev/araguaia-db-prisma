@@ -1,6 +1,7 @@
 'use client';
 
 import BrandBreadcrumb from './components/BrandBreadcrumb';
+import BrandForm from './components/BrandForm';
 
 export const runtime = 'edge';
 
@@ -13,6 +14,7 @@ const VehiclePage = () => {
         </h1>
         <BrandBreadcrumb />
       </div>
+      <BrandForm />
     </div>
   );
 };

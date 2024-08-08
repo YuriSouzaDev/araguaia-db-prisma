@@ -1,15 +1,15 @@
 'use client';
 
-import { CustomInput } from '@/app/components/shared/custom-input';
-import { PasswordInput } from '@/app/components/shared/input-password';
-import { Button } from '@/app/components/ui/button';
+import { CustomInput } from '@/components/shared/custom-input';
+import { PasswordInput } from '@/components/shared/input-password';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/app/components/ui/form';
+} from '@/components/ui/form';
 import { useLogin } from '@/hooks/useLogin';
 import { cn } from '@/lib/utils';
 import { formSchema, LoginFormValue } from '@/lib/zod/LoginFormSchema';
