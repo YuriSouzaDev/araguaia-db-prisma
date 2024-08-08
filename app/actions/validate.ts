@@ -16,9 +16,7 @@ export async function validateToken() {
         Authorization: 'Bearer ' + token,
       },
     });
-
     if (!response.ok) throw new Error('Erro ao validar o token');
-
     const data = await response.json();
     return { data, ok: true, error: '' };
   } catch (error) {

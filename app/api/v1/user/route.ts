@@ -47,8 +47,5 @@ export async function GET(request: NextRequest) {
     return new NextResponse('Sem autorização', { status: 401 });
   const users: User[] = await prismadb.user.findMany();
 
-  return new NextResponse(JSON.stringify(users), {
-    status: 200,
-    statusText: 'OK',
-  });
+  return NextResponse.json(users);
 }

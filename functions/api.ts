@@ -1,6 +1,6 @@
 // @ts-nocheck
 // export const API_URL = 'http://18.218.233.145/wp-json';
-export const API_URL = 'http://localhost:3000/api/v1';
+export const API_URL = process.env.API_URL;
 
 export function LOGIN_POST() {
   return {
@@ -16,7 +16,7 @@ export function TOKEN_VALIDATE_POST() {
 
 export function USER_GET() {
   return {
-    url: API_URL + '/api/v1/user',
+    url: API_URL + '/user',
   };
 }
 
