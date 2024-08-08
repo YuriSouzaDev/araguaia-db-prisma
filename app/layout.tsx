@@ -1,7 +1,7 @@
 import { UserContextProvider } from '@/stores/user-context';
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
-import { userGet } from './actions/user-get';
+import { userGet } from '../actions/user-get';
 import './globals.css';
 
 const nunito = Nunito({ subsets: ['latin'] });

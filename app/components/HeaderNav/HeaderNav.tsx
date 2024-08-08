@@ -1,4 +1,4 @@
-import { userGet } from '@/app/actions/user-get';
+import { userGet } from '@/actions/user-get';
 import {
   Avatar,
   AvatarFallback,

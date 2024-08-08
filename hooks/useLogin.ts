@@ -1,7 +1,7 @@
 import { LoginFormValue } from '@/lib/zod/LoginFormSchema';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { LoginRequest } from '../app/actions/login';
+import { LoginRequest } from '../actions/login';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);

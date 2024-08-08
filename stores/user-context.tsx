@@ -1,7 +1,7 @@
 'use client';
 
-import { logout } from '@/app/actions/logout';
-import { validateToken } from '@/app/actions/validate';
+import { logout } from '@/actions/logout';
+import { validateToken } from '@/actions/validate';
 import { User } from '@prisma/client';
 import React, { useEffect } from 'react';
 
