@@ -17,6 +17,7 @@ export async function LoginRequest(formData: LoginFormValue) {
       cookies().set('tokenAraguaia', data.token, {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
+        expires: new Date(Date.now() + 8 * 60 * 60 * 1000),
         sameSite: 'lax',
         maxAge: 8 * 60 * 60,
         path: '/',

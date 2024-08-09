@@ -1,4 +1,3 @@
-import brandPost from '@/actions/brand-post';
 import { InputWithLabel } from '@/components/shared/input-with-label';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -16,6 +15,7 @@ import useUploadSingleImage from '@/hooks/useUploadSingleImage';
 import { cn } from '@/lib/utils';
 import { BrandFormValue, formBrandSchema } from '@/lib/zod/BrandFormSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { Trash, Upload } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -32,28 +32,25 @@ const BrandForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const {
-    img,
-    setImg,
-    handleImgChange,
-    handleUpload,
-    handleRemove,
-    fileName,
-    fileUrl,
-    setFileName,
-    setFileUrl,
-  } = useUploadSingleImage();
+  const { handleUpload, handleRemove, fileName, image, setImage } =
+    useUploadSingleImage();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const onSubmit = async (value: BrandFormValue) => {
     try {
+      setError('');
       setLoading(true);
-      const response = await brandPost(value);
-      if (response.ok) router.push('/dashboard/marcas');
-      console.log(value);
-    } catch (error) {
-      console.log(error);
+      const response = await axios.post('/api/v1/brands', value);
+      if (response.status === 200) router.push('/dashboard/marcas');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        const message = error.response.data.message;
+        setError(message);
+      } else {
+        setError('Algo deu errado.');
+      }
     } finally {
       setLoading(false);
     }
@@ -64,7 +61,7 @@ const BrandForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div
           className="grid grid-cols-1 1250:grid-cols-5 gap-4 bg-custom-white p-5"
-          style={{ gridTemplateColumns: '1fr 3fr 1fr 1fr' }}
+          style={{ gridTemplateColumns: '1fr 3fr 2fr' }}
         >
           <FormField
             control={form.control}
@@ -77,7 +74,7 @@ const BrandForm = () => {
                       'outline-dashed outline-1 outline-custom-gray rounded-md relative w-[132px] h-[132px] group',
                     )}
                   >
-                    {img ? (
+                    {image ? (
                       <div className="flex flex-wrap p-7 gap-2">
                         <div className="relative w-[100px] h-[100px] rounded-md">
                           <div className="z-10 absolute -top-5 -right-5">
@@ -86,7 +83,8 @@ const BrandForm = () => {
                               size="iconSmall"
                               type="button"
                               onClick={() => {
-                                setImg('');
+                                handleRemove(fileName, field.onChange);
+                                setImage('');
                                 if (inputRef.current) {
                                   inputRef.current.value = '';
                                 }
@@ -99,7 +97,7 @@ const BrandForm = () => {
                             <div
                               className="justify-center items-center h-full w-full gap-3 rounded-md object-cover bg-center bg-no-repeat"
                               style={{
-                                backgroundImage: `url(${img})`,
+                                backgroundImage: `url(${image})`,
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center center',
                               }}
@@ -117,9 +115,9 @@ const BrandForm = () => {
                     <Input
                       type="file"
                       disabled={loading}
-                      className="h-full opacity-1 absolute top-0"
+                      className="h-full opacity-0 absolute top-0"
                       accept=".png, .jpeg, .jpg, .webp"
-                      onChange={handleUpload}
+                      onChange={(e) => handleUpload(e, field.onChange)}
                       ref={inputRef}
                     />
                   </div>
@@ -154,13 +152,15 @@ const BrandForm = () => {
                 <div className="space-y-1 leading-none">
                   <FormLabel>Arquivado</FormLabel>
                   <FormDescription>
-                    Este banner não irá aparecer em nenhum lugar na loja
+                    Os produtos desta marca não aparecerão em nenhum lugar da
+                    loja.
                   </FormDescription>
                 </div>
               </FormItem>
             )}
           />
         </div>
+        <p>{error}</p>
         {loading ? (
           <Button disabled={loading} type="submit">
             Cadastrando...
