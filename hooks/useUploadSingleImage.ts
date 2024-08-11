@@ -41,17 +41,43 @@ const useUploadSingleImage = () => {
     key: string | undefined,
     onUrlChange: (url: string) => void,
   ) => {
-    if (key) {
-      const { error } = await supabase.storage
-        .from('brand-images')
-        .remove([key]);
-      if (error) {
-        alert('Erro ao remover a imagem: ' + error.message);
-      } else {
-        onUrlChange('');
+    try {
+      if (key) {
+        const { error } = await supabase.storage
+          .from('brand-images')
+          .remove([key]);
+        if (error) {
+          throw new Error('Erro ao remover a imagem: ' + error.message);
+        } else {
+          setFileName(undefined);
+          onUrlChange('');
+          setImage('');
+        }
       }
+    } catch (error: any) {
+      alert(error.message);
     }
   };
+
+  const handleConfirmRemove = async (key: string | undefined) => {
+    try {
+      if (key) {
+        const { error } = await supabase.storage
+          .from('brand-images')
+          .remove([key]);
+        if (error) {
+          throw new Error('Erro ao remover a imagem: ' + error.message);
+        } else {
+          setFileName(undefined);
+
+          setImage('');
+        }
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
   return {
     handleUpload,
     handleRemove,
@@ -59,6 +85,8 @@ const useUploadSingleImage = () => {
     fileUrl,
     image,
     setImage,
+    setFileName,
+    handleConfirmRemove,
   };
 };
 

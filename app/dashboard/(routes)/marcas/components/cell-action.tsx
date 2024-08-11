@@ -62,19 +62,22 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   return (
     <>
-      <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      />
-      <EditBrandModal
-        data={data}
-        isOpen={openEdit}
-        onClose={() => setOpenEdit(false)}
-        onConfirm={() => {}}
-        loading={loading}
-      />
+      {open && (
+        <AlertModal
+          isOpen={open}
+          onClose={() => setOpen(false)}
+          onConfirm={onDelete}
+          loading={loading}
+        />
+      )}
+      {openEdit && (
+        <EditBrandModal
+          data={data}
+          isOpen={openEdit}
+          onClose={() => setOpenEdit(false)}
+          onConfirm={() => {}}
+        />
+      )}
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
