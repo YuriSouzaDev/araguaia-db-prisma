@@ -1,13 +1,10 @@
 import { InputWithLabel } from '@/components/shared/input-with-label';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -115,7 +112,9 @@ const BrandForm = () => {
                     <Input
                       type="file"
                       disabled={loading}
-                      className="h-full opacity-0 absolute top-0"
+                      className={cn(
+                        'h-full opacity-0 absolute top-0 disabled:opacity-0',
+                      )}
                       accept=".png, .jpeg, .jpg, .webp"
                       onChange={(e) => handleUpload(e, field.onChange)}
                       ref={inputRef}
@@ -135,27 +134,6 @@ const BrandForm = () => {
                   <InputWithLabel label="Nome da marca" {...field} />
                 </FormControl>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isArchived"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>Arquivado</FormLabel>
-                  <FormDescription>
-                    Os produtos desta marca não aparecerão em nenhum lugar da
-                    loja.
-                  </FormDescription>
-                </div>
               </FormItem>
             )}
           />

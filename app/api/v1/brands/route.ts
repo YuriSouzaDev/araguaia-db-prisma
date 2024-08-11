@@ -4,6 +4,11 @@ import { Brand, Prisma } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
+const capitalize = (str: string) => {
+  if (str.length === 0) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
 export async function POST(request: Request) {
   try {
     const { name, imageUrl, isArchived } = await request.json();
@@ -12,19 +17,22 @@ export async function POST(request: Request) {
 
     if (!authenticated)
       return NextResponse.json('Sem autorização', { status: 401 });
-    const brandName = await prismadb.brand.findUnique({
-      where: {
-        name,
-      },
+    const formattedName = capitalize(name);
+
+    const existingBrand = await prismadb.brand.findUnique({
+      where: { name: formattedName },
     });
-    // if (brandName?.name === name) {
-    //   return NextResponse.json('Ja existe uma marca com este nome', {
-    //     status: 400,
-    //   });
-    // }
+
+    if (existingBrand) {
+      return NextResponse.json(
+        { message: 'Marca já existente.', fields: ['name'] },
+        { status: 409 },
+      );
+    }
+
     const brand = await prismadb.brand.create({
       data: {
-        name,
+        name: formattedName,
         imageUrl,
         isArchived,
       },
@@ -36,7 +44,7 @@ export async function POST(request: Request) {
       if (error.code === 'P2002') {
         return NextResponse.json(
           {
-            message: 'Marca já existente. Tente novamente!',
+            message: 'Marca já existente.',
             fields: error.meta?.target,
           },
           { status: 409 },

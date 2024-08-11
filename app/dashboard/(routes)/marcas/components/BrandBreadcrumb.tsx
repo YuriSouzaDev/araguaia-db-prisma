@@ -26,16 +26,7 @@ const BrandBreadcrumb = () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink
-              onClick={() => router.push('/dashboard/marcas')}
-              className="cursor-pointer"
-            >
-              Marcas
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Cadastrar Marca</BreadcrumbPage>
+            <BreadcrumbPage> Marcas</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

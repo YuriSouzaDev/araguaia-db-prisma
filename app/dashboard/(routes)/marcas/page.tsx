@@ -1,17 +1,27 @@
-import NewItemButton from '@/components/shared/NewItemButton';
+import prismadb from '@/lib/prisma/prismadb';
+import { format } from 'date-fns';
+import VehicleClient from './components/client';
+import { BrandColumn } from './components/columns';
 
-const Vehicles = () => {
+const Vehicles = async () => {
+  const brands = await prismadb.brand.findMany({
+    orderBy: {
+      updatedAt: 'desc',
+    },
+  });
+
+  const formattedBanners: BrandColumn[] = brands.map((item) => ({
+    id: item.id,
+    name: item.name,
+    imageUrl: item.imageUrl,
+    isArchived: item.isArchived,
+    updatedAt: format(item.updatedAt, 'dd/MM/yyyy'),
+    createdAt: format(item.createdAt, 'dd/MM/yyyy'),
+  }));
+
   return (
     <div className="animate-fadeIn">
-      <div className="mb-5 flex justify-between items-center">
-        <h1 className="font-bold text-2xl text-custom-textBlack">
-          Lista de Marcas
-        </h1>
-        <NewItemButton
-          label="Adicionar Marca"
-          push={`/dashboard/marcas/novo`}
-        />
-      </div>
+      <VehicleClient data={formattedBanners} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import BrandBreadcrumb from './components/BrandBreadcrumb';
+import BrandBreadcrumb from '../components/BrandBreadcrumb';
 import BrandForm from './components/BrandForm';
 
 export const runtime = 'edge';
