@@ -16,7 +16,7 @@ export type BrandColumn = {
 export const vehicleColumns: ColumnDef<BrandColumn>[] = [
   {
     accessorKey: 'name',
-    header: () => <div className="relative ml-7">Nome</div>,
+    header: () => 'Nome',
     cell: ({ row }) => {
       return (
         <div className="relative ml-7">
