@@ -8,6 +8,7 @@ const OptionalsPage = async () => {
     orderBy: {
       updatedAt: 'desc',
     },
+    include: { createdBy: true, lastModifiedBy: true },
   });
 
   const formattedBanners: OptionalColumn[] = optionals.map((item) => ({
@@ -15,6 +16,7 @@ const OptionalsPage = async () => {
     name: item.name,
     updatedAt: format(item.updatedAt, 'dd/MM/yyyy'),
     createdAt: format(item.createdAt, 'dd/MM/yyyy'),
+    lastModifiedByName: item.lastModifiedBy?.name || 'Desconhecido',
   }));
 
   return (

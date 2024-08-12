@@ -44,6 +44,7 @@ const OptionalFormClient = () => {
       if (axios.isAxiosError(error) && error.response) {
         const message = error.response.data.message;
         toast.error(message);
+        console.log(message);
         setError(message);
       } else {
         toast.error('Algo deu errado.');

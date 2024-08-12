@@ -1,9 +1,11 @@
+import { userGet } from '@/actions/user-get';
 import verifyToken from '@/functions/verify-token';
 import prismadb from '@/lib/prisma/prismadb';
 import { Brand } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { capitalize } from '../../optionals/route';
 
 type FindById = {
   id: string;
@@ -28,21 +30,33 @@ export async function GET(request: Request, context: { params: FindById }) {
   }
 }
 
-export async function PUT(request: NextRequest, context: { params: FindById }) {
+export async function PUT(req: NextRequest, context: { params: FindById }) {
+  const body = await req.json();
+  const { name, imageUrl, isArchived } = body;
   const token = cookies().get('tokenAraguaia')?.value;
   const authenticated = token ? await verifyToken(token) : false;
+  const { data: user } = await userGet();
 
   if (!authenticated)
     return NextResponse.json('Sem autorização', { status: 401 });
 
-  const newBrandData: Brand = await request.json();
+  if (!user || !user.id) {
+    return NextResponse.json('Usuário não encontrado', { status: 404 });
+  }
+
+  const formattedName = capitalize(name);
 
   try {
     const updatedBrand: Brand = await prismadb.brand.update({
       where: {
         id: Number(context.params.id),
       },
-      data: newBrandData,
+      data: {
+        name: formattedName,
+        imageUrl,
+        isArchived,
+        lastModifiedById: user.id,
+      },
     });
 
     return new NextResponse(JSON.stringify(updatedBrand), {

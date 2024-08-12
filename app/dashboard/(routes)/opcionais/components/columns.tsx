@@ -2,11 +2,11 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { CellAction } from './cell-action';
-// import { CellAction } from './cell-action';
 
 export type OptionalColumn = {
   id: number;
   name: string;
+  lastModifiedByName: string;
 };
 
 export const optionalColumns: ColumnDef<OptionalColumn>[] = [
@@ -14,7 +14,10 @@ export const optionalColumns: ColumnDef<OptionalColumn>[] = [
     accessorKey: 'name',
     header: 'Nome',
   },
-
+  {
+    accessorKey: 'lastModifiedByName',
+    header: 'Última modificação por',
+  },
   {
     accessorKey: 'updatedAt',
     header: 'Última atualização',

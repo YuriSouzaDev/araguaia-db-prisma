@@ -15,30 +15,64 @@ datasource db {
 }
 
 model Brand {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
-  imageUrl   String
-  isArchived Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id               Int       @id @default(autoincrement())
+  name             String    @unique
+  imageUrl         String
+  isArchived       Boolean   @default(false)
+  createdBy        User      @relation("BrandCreatedBy", fields: [createdById], references: [id])
+  createdById      Int
+  lastModifiedBy   User?     @relation("BrandLastModifiedBy", fields: [lastModifiedById], references: [id])
+  lastModifiedById Int?
+  vehicles         Vehicle[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model Optional {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               Int       @id @default(autoincrement())
+  name             String    @unique
+  createdBy        User      @relation("OptionalCreatedBy", fields: [createdById], references: [id])
+  createdById      Int
+  lastModifiedBy   User?     @relation("OptionalLastModifiedBy", fields: [lastModifiedById], references: [id])
+  lastModifiedById Int?
+  vehicles         Vehicle[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Vehicle {
+  id               Int      @id @default(autoincrement())
+  name             String
+  createdBy        User     @relation("VehicleCreatedBy", fields: [createdById], references: [id])
+  createdById      Int
+  lastModifiedBy   User?    @relation("VehicleLastModifiedBy", fields: [lastModifiedById], references: [id])
+  lastModifiedById Int?
+  brandId          Int
+  brand            Brand    @relation(fields: [brandId], references: [id])
+  optionalId       Int
+  optional         Optional @relation(fields: [optionalId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([brandId])
+  @@index([optionalId])
 }
 
 model User {
-  id        Int      @id @unique @default(autoincrement())
-  name      String
-  lastName  String
-  userName  String   @unique
-  email     String   @unique
-  avatar    String
-  role      String   @default("Vendedor")
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                    Int        @id @unique @default(autoincrement())
+  name                  String
+  lastName              String
+  userName              String     @unique
+  email                 String     @unique
+  avatar                String
+  role                  String     @default("Vendedor")
+  password              String
+  createdBrands         Brand[]    @relation("BrandCreatedBy")
+  lastModifiedBrands    Brand[]    @relation("BrandLastModifiedBy")
+  createdOptionals      Optional[] @relation("OptionalCreatedBy")
+  lastModifiedOptionals Optional[] @relation("OptionalLastModifiedBy")
+  createdVehicles       Vehicle[]  @relation("VehicleCreatedBy")
+  lastModifiedVehicles  Vehicle[]  @relation("VehicleLastModifiedBy")
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
 }

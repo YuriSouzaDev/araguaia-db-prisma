@@ -9,6 +9,7 @@ export type BrandColumn = {
   name: string;
   imageUrl: string;
   isArchived: boolean;
+  lastModifiedByName: string;
   updatedAt: string;
   createdAt: string;
 };
@@ -37,6 +38,10 @@ export const vehicleColumns: ColumnDef<BrandColumn>[] = [
     accessorKey: 'isArchived',
     header: 'Arquivada',
     cell: ({ row }) => (row.original.isArchived ? 'Sim' : 'Não'),
+  },
+  {
+    accessorKey: 'lastModifiedByName',
+    header: 'Última modificação por',
   },
   {
     accessorKey: 'updatedAt',

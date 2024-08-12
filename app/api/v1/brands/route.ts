@@ -1,3 +1,4 @@
+import { userGet } from '@/actions/user-get';
 import verifyToken from '@/functions/verify-token';
 import prismadb from '@/lib/prisma/prismadb';
 import { Brand, Prisma } from '@prisma/client';
@@ -14,9 +15,15 @@ export async function POST(request: Request) {
     const { name, imageUrl, isArchived } = await request.json();
     const token = cookies().get('tokenAraguaia')?.value;
     const authenticated = token ? await verifyToken(token) : false;
+    const { data: user } = await userGet();
 
     if (!authenticated)
       return NextResponse.json('Sem autorização', { status: 401 });
+
+    if (!user || !user.id) {
+      return NextResponse.json('Usuário não encontrado', { status: 404 });
+    }
+
     const formattedName = capitalize(name);
 
     const existingBrand = await prismadb.brand.findUnique({
@@ -35,6 +42,8 @@ export async function POST(request: Request) {
         name: formattedName,
         imageUrl,
         isArchived,
+        createdById: user.id,
+        lastModifiedById: user.id,
       },
     });
     return NextResponse.json(brand);

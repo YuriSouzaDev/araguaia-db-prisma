@@ -1,3 +1,4 @@
+import { userGet } from '@/actions/user-get';
 import verifyToken from '@/functions/verify-token';
 import prismadb from '@/lib/prisma/prismadb';
 import { Optional } from '@prisma/client';
@@ -36,9 +37,14 @@ export async function PATCH(
     const { name } = body;
     const token = cookies().get('tokenAraguaia')?.value;
     const authenticated = token ? await verifyToken(token) : false;
+    const { data: user } = await userGet();
 
     if (!authenticated)
       return NextResponse.json('Sem autorização', { status: 401 });
+
+    if (!user || !user.id) {
+      return NextResponse.json('Usuário não encontrado', { status: 404 });
+    }
 
     if (!name) return new NextResponse('Nome é requedido.', { status: 400 });
 
@@ -46,7 +52,7 @@ export async function PATCH(
       where: {
         id: Number(params.id),
       },
-      data: { name },
+      data: { name, lastModifiedById: user.id },
     });
 
     return NextResponse.json(optional);
