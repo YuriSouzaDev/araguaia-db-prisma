@@ -17,6 +17,7 @@ import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 const BrandFormClient = () => {
   const form = useForm<BrandFormValue>({
@@ -44,12 +45,15 @@ const BrandFormClient = () => {
         router.refresh();
         form.reset();
         setImage('');
+        toast.success('Marca criada com sucesso!');
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         const message = error.response.data.message;
+        toast.error(message);
         setError(message);
       } else {
+        toast.error('Algo deu errado.');
         setError('Algo deu errado.');
       }
     } finally {
@@ -111,6 +115,7 @@ const BrandFormClient = () => {
                     <Input
                       type="file"
                       disabled={loading}
+                      onChangeCapture={() => setError('')}
                       className={cn(
                         'h-full opacity-0 absolute top-0 disabled:opacity-0 cursor-pointer',
                       )}
@@ -131,6 +136,7 @@ const BrandFormClient = () => {
               <FormItem className="relative">
                 <FormControl>
                   <InputWithLabel
+                    onChangeCapture={() => setError('')}
                     label="Nome da marca"
                     {...field}
                     className="w-[300px]"

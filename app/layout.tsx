@@ -1,3 +1,4 @@
+import { ToasterProvider } from '@/providers/toast-provider';
 import { UserContextProvider } from '@/stores/user-context';
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
@@ -22,7 +23,11 @@ export default async function RootLayout({
       <body
         className={`min-h-screen w-full relative ${nunito.className} bg-custom-bodyBg`}
       >
-        <UserContextProvider user={user}>{children}</UserContextProvider>
+        <UserContextProvider user={user}>
+          {' '}
+          <ToasterProvider />
+          {children}
+        </UserContextProvider>
       </body>
     </html>
   );

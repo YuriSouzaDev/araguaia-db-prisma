@@ -22,6 +22,7 @@ import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { Checkbox } from '../ui/checkbox';
 import { AlertModal } from './alert-modal';
 import { Modal } from './modal';
@@ -80,13 +81,16 @@ export const EditBrandModal: React.FC<EditBrandModalProps> = ({
       if (response.status === 200) {
         router.refresh();
         onClose();
+        toast.success('Atualizado com sucesso!');
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         const message = error.response.data.message;
         setError(message);
+        toast.error('Algo deu errado.');
       } else {
         setError('Algo deu errado.');
+        toast.error('Algo deu errado.');
       }
     } finally {
       setLoading(false);
