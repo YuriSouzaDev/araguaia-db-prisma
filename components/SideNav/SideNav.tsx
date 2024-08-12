@@ -1,6 +1,6 @@
 'use client';
 
-import { Car, House, Tag, User } from 'lucide-react';
+import { Car, ClipboardList, House, Tag, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Logout from './components/Logout';
 import MenuItem from './components/MenuItem';
@@ -25,6 +25,12 @@ const SideNav = () => {
       href: '/dashboard/marcas',
       icon: <Tag height={24} width={24} className="-mt-1" />,
       active: pathname.includes('/dashboard/marcas'),
+    },
+    {
+      title: 'Opcionais',
+      href: '/dashboard/opcionais',
+      icon: <ClipboardList height={24} width={24} className="-mt-1" />,
+      active: pathname.includes('/dashboard/opcionais'),
     },
     {
       title: 'Usuários',
