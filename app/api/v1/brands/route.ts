@@ -54,11 +54,16 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
-  const brands: Brand[] = await prismadb.brand.findMany();
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const isArchived = searchParams.get('isArchived');
 
-  return new NextResponse(JSON.stringify(brands), {
-    status: 200,
-    statusText: 'OK',
+  const brands: Brand[] = await prismadb.brand.findMany({
+    where: { isArchived: isArchived ? true : false },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
+
+  return NextResponse.json(brands);
 }

@@ -9,7 +9,7 @@ type FindById = {
   id: string;
 };
 
-export async function GET(request: NextRequest, context: { params: FindById }) {
+export async function GET(request: Request, context: { params: FindById }) {
   try {
     const brand: Brand = await prismadb.brand.findUniqueOrThrow({
       where: {
@@ -17,10 +17,7 @@ export async function GET(request: NextRequest, context: { params: FindById }) {
       },
     });
 
-    return new NextResponse(JSON.stringify(brand), {
-      status: 200,
-      statusText: 'OK',
-    });
+    return NextResponse.json(brand);
   } catch (error) {
     const msgError = (error as PrismaClientKnownRequestError).message;
 
