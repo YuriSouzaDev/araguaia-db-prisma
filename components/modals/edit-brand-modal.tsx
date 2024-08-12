@@ -68,7 +68,7 @@ export const EditBrandModal: React.FC<EditBrandModalProps> = ({
   useEffect(() => {
     setIsMounted(true);
     setImage(data.imageUrl);
-  }, []);
+  }, [data, setImage]);
 
   if (!isMouted) return null;
 
@@ -109,7 +109,6 @@ export const EditBrandModal: React.FC<EditBrandModalProps> = ({
     }
   };
 
-  console.log(data.id);
   return (
     <>
       <AlertModal

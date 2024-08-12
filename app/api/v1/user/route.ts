@@ -1,19 +1,18 @@
-import verifyToken from '@/functions/verify-token';
 import prismadb from '@/lib/prisma/prismadb';
 import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  const { email, password, ...rest } = await request.json();
+  const { username, password, ...rest } = await request.json();
 
-  const token = request.cookies.get('tokenAraguaia')?.value;
-  const authenticated = token ? await verifyToken(token) : false;
+  // const token = request.cookies.get('tokenAraguaia')?.value;
+  // const authenticated = token ? await verifyToken(token) : false;
 
-  if (!authenticated)
-    return new NextResponse('Sem autorização', { status: 401 });
+  // if (!authenticated)
+  //   return new NextResponse('Sem autorização', { status: 401 });
 
-  if (!email || !password) {
+  if (!username || !password) {
     return new NextResponse(
       JSON.stringify({ message: 'Email e senha são requeridos.' }),
       {
@@ -27,12 +26,13 @@ export async function POST(request: NextRequest) {
 
   const createdUser: User = await prismadb.user.create({
     data: {
-      email,
+      userName: username,
       password: hashedPassword,
       ...rest,
     },
   });
 
+  return new NextResponse('Criado com sucesso', { status: 200 });
   return new NextResponse(JSON.stringify(createdUser), {
     status: 201,
     statusText: 'Created',
@@ -40,11 +40,11 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const token = request.cookies.get('tokenAraguaia')?.value;
-  const authenticated = token ? await verifyToken(token) : false;
+  // const token = request.cookies.get('tokenAraguaia')?.value;
+  // const authenticated = token ? await verifyToken(token) : false;
 
-  if (!authenticated)
-    return new NextResponse('Sem autorização', { status: 401 });
+  // if (!authenticated)
+  //   return new NextResponse('Sem autorização', { status: 401 });
   const users: User[] = await prismadb.user.findMany();
 
   return NextResponse.json(users);

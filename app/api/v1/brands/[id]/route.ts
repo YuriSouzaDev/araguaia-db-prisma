@@ -1,6 +1,8 @@
+import verifyToken from '@/functions/verify-token';
 import prismadb from '@/lib/prisma/prismadb';
 import { Brand } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 type FindById = {
@@ -30,6 +32,12 @@ export async function GET(request: NextRequest, context: { params: FindById }) {
 }
 
 export async function PUT(request: NextRequest, context: { params: FindById }) {
+  const token = cookies().get('tokenAraguaia')?.value;
+  const authenticated = token ? await verifyToken(token) : false;
+
+  if (!authenticated)
+    return NextResponse.json('Sem autorização', { status: 401 });
+
   const newBrandData: Brand = await request.json();
 
   try {

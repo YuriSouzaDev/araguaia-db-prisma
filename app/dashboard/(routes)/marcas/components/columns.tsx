@@ -35,8 +35,8 @@ export const vehicleColumns: ColumnDef<BrandColumn>[] = [
   },
   {
     accessorKey: 'isArchived',
-    header: 'Ativa',
-    cell: ({ row }) => (row.original.isArchived ? 'Não' : 'Sim'),
+    header: 'Arquivada',
+    cell: ({ row }) => (row.original.isArchived ? 'Sim' : 'Não'),
   },
   {
     accessorKey: 'updatedAt',
