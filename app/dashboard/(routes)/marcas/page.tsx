@@ -1,6 +1,6 @@
 import prismadb from '@/lib/prisma/prismadb';
 import { format } from 'date-fns';
-import VehicleClient from './components/client';
+import BrandClient from './components/client';
 import { BrandColumn } from './components/columns';
 
 const Vehicles = async () => {
@@ -23,7 +23,7 @@ const Vehicles = async () => {
 
   return (
     <div className="animate-fadeIn">
-      <VehicleClient data={formattedBanners} />
+      <BrandClient data={formattedBanners} />
     </div>
   );
 };

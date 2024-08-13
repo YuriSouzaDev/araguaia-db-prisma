@@ -2,11 +2,11 @@ import BrandBreadcrumb from './BrandBreadcrumb';
 import { BrandColumn, vehicleColumns } from './columns';
 import { DataTableBrands } from './data-table-brands';
 
-interface BrandClientProps {
+interface VehicleClientProps {
   data: BrandColumn[];
 }
 
-const BrandClient: React.FC<BrandClientProps> = ({ data }) => {
+const VehicleClient: React.FC<VehicleClientProps> = ({ data }) => {
   return (
     <div className="animate-fadeIn">
       <div className="mb-5 flex justify-between items-center">
@@ -20,4 +20,4 @@ const BrandClient: React.FC<BrandClientProps> = ({ data }) => {
   );
 };
 
-export default BrandClient;
+export default VehicleClient;
