@@ -70,7 +70,7 @@ export async function GET(request: Request) {
   const brands: Brand[] = await prismadb.brand.findMany({
     where: { isArchived: isArchived ? true : false },
     orderBy: {
-      createdAt: 'desc',
+      updatedAt: 'desc',
     },
   });
 

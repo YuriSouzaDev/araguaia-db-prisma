@@ -8,17 +8,15 @@ export interface InputWithLabelProps
   id?: string;
   multiple?: boolean;
   loading?: boolean;
-  name?: string;
 }
 
 const InputWithLabel = React.forwardRef<HTMLInputElement, InputWithLabelProps>(
-  ({ className, type, label, id, multiple, name, loading, ...props }, ref) => {
+  ({ className, type, label, id, multiple, loading, ...props }, ref) => {
     return (
       <div className="relative">
         <input
           multiple
           type={type}
-          name={name}
           className={cn(
             'peer w-full border-2 border-custom-borderLight placeholder:text-transparent bg-white rounded-[4px] py-2 px-4 focus-visible:outline-custom-primary text-sm  disabled:border-slate-400 disabled:bg-white disabled:text-slate-400',
             loading && 'cursor-not-allowed ',

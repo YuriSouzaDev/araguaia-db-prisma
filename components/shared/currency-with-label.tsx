@@ -8,9 +8,8 @@ export interface CurrencyWithLabelProps
   id: string;
   className?: string;
   decimalScale?: number;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  name: string;
+  value?: string | number;
+  onValueChange?: (value: string | number) => void;
   loading: boolean;
   isAllowed?: (values: any) => boolean;
   thousandSeparator?: string;
@@ -27,7 +26,6 @@ const CurrencyWithLabel = React.forwardRef<
       id,
       decimalScale = 2,
       loading,
-      name,
       value,
       onValueChange,
       isAllowed,
@@ -39,7 +37,6 @@ const CurrencyWithLabel = React.forwardRef<
       <div className="relative">
         <NumericFormat
           value={value}
-          name={name}
           onValueChange={({ value }) => onValueChange && onValueChange(value)}
           allowNegative={false}
           decimalSeparator=","
@@ -56,6 +53,7 @@ const CurrencyWithLabel = React.forwardRef<
             className,
           )}
           isAllowed={isAllowed}
+          type="text"
         />
         <label
           className="absolute left-0 -translate-y-2 ml-4 bg-white px-1 text-xs leading-4 duration-100 ease-linear peer-placeholder-shown:translate-y-[6px] peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[28px] peer-placeholder-shown:text-gray-900 peer-focus:ml-4 peer-focus:-translate-y-2 peer-focus:px-1 peer-focus:text-xs peer-focus-visible:text-custom-primary peer-invalid:-translate-y-0 peer-disabled:text-slate-400"

@@ -10,16 +10,15 @@ interface CustomSelectProps {
   loading: boolean;
   placeholder: string;
   id: string;
-  name: string;
   data: DataSelect[];
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   placeholder,
   data,
-  name,
   id,
   loading,
+  ...props
 }) => {
   const [selectedOption, setSelectedOption] =
     useState<SingleValue<DataSelect>>(null);
@@ -65,12 +64,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       }}
       isClearable
       placeholder={placeholder}
-      name={name}
       isDisabled={loading}
-      id={id}
       defaultValue={selectedOption}
       onChange={setSelectedOption}
       options={data}
+      inputId={id}
+      {...props}
     />
   );
 };

@@ -35,27 +35,25 @@ model Optional {
   createdById      Int
   lastModifiedBy   User?     @relation("OptionalLastModifiedBy", fields: [lastModifiedById], references: [id])
   lastModifiedById Int?
-  vehicles         Vehicle[]
+  vehicles         Vehicle[] @relation("VehicleOptionals")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
 
 model Vehicle {
-  id               Int      @id @default(autoincrement())
+  id               Int        @id @default(autoincrement())
   name             String
-  createdBy        User     @relation("VehicleCreatedBy", fields: [createdById], references: [id])
+  createdBy        User       @relation("VehicleCreatedBy", fields: [createdById], references: [id])
   createdById      Int
-  lastModifiedBy   User?    @relation("VehicleLastModifiedBy", fields: [lastModifiedById], references: [id])
+  lastModifiedBy   User?      @relation("VehicleLastModifiedBy", fields: [lastModifiedById], references: [id])
   lastModifiedById Int?
   brandId          Int
-  brand            Brand    @relation(fields: [brandId], references: [id])
-  optionalId       Int
-  optional         Optional @relation(fields: [optionalId], references: [id])
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  brand            Brand      @relation(fields: [brandId], references: [id])
+  optionals        Optional[] @relation("VehicleOptionals")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
 
   @@index([brandId])
-  @@index([optionalId])
 }
 
 model User {

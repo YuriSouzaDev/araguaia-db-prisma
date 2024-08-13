@@ -5,14 +5,10 @@ import { Optional, Prisma } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export const capitalize = (str: string) => {
-  if (str.length === 0) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-};
-
 export async function POST(request: Request) {
   try {
-    const { name } = await request.json();
+    const { nome, marca } = await request.json();
+    const opcionals = [1, 2];
     const token = cookies().get('tokenAraguaia')?.value;
     const authenticated = token ? await verifyToken(token) : false;
     const { data: user } = await userGet();
@@ -24,29 +20,40 @@ export async function POST(request: Request) {
       return NextResponse.json('Usuário não encontrado', { status: 404 });
     }
 
-    const formattedName = capitalize(name);
-
-    const existingBrand = await prismadb.optional.findUnique({
-      where: { name: formattedName },
+    const brand = await prismadb.brand.findUnique({
+      where: { id: +marca },
     });
 
-    if (existingBrand) {
-      return NextResponse.json(
-        { message: 'Opcional já existente.', fields: ['name'] },
-        { status: 409 },
-      );
+    if (!brand) {
+      return NextResponse.json('Marca não encontrada', { status: 404 });
     }
 
-    const optional = await prismadb.optional.create({
+    const existingOptionals = await prismadb.optional.findMany({
+      where: {
+        id: { in: opcionals },
+      },
+    });
+
+    console.log(nome, marca, opcionals);
+
+    if (existingOptionals.length !== opcionals.length) {
+      return new NextResponse('Some optionals were not found', { status: 404 });
+    }
+
+    const vehicle = await prismadb.vehicle.create({
       data: {
-        name: formattedName,
+        name: nome,
+        brandId: +marca,
+        optionals: {
+          connect: existingOptionals.map((opt) => ({ id: +opt.id })),
+        },
         createdById: user.id,
         lastModifiedById: user.id,
       },
     });
-    return NextResponse.json(optional);
+    return NextResponse.json(vehicle);
   } catch (error) {
-    console.log('[OPTIONAL_POST}', error);
+    console.log('[VEHICLE_POST}', error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         return NextResponse.json(
@@ -62,11 +69,15 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const optionals: Optional[] = await prismadb.optional.findMany({
+  const vehicles: Optional[] = await prismadb.vehicle.findMany({
     orderBy: {
-      updatedAt: 'desc',
+      createdAt: 'desc',
+    },
+    include: {
+      optionals: true,
     },
   });
 
-  return NextResponse.json(optionals);
+  return NextResponse.json(vehicles);
 }
+0;

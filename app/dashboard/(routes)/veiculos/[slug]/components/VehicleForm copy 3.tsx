@@ -1,5 +1,6 @@
 'use client';
 
+import { CurrencyWithLabel } from '@/components/shared/currency-with-label';
 import { InputWithLabel } from '@/components/shared/input-with-label';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,35 +11,27 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
   formVehicleSchema,
   VehicleFormValue,
 } from '@/lib/zod/VehicleFormSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Brand } from '@prisma/client';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import Select from 'react-select';
 
 interface VehicleFormProps {
-  brands: Brand[];
-  // optionals: Optional[];
+  brands: { value: string; label: string }[];
+  optionals: { value: string; label: string }[];
 }
 
 const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
   const form = useForm<VehicleFormValue>({
     resolver: zodResolver(formVehicleSchema),
     defaultValues: {
-      nome: '',
+      preco: '',
+      modelo: '',
       marca: '',
+      opcionals: [],
     },
   });
 
@@ -47,31 +40,9 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
   const MAX_LIMIT_PLATE = 10;
   const date = new Date();
   const year = date.getFullYear();
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
-  const onSubmit = async (data: VehicleFormValue) => {
-    try {
-      setError('');
-      setLoading(true);
-      const response = await axios.post('/api/v1/vehicles', data);
-      if (response.status === 200) {
-        router.refresh();
-        form.reset();
-        toast.success('Veiculo criado com sucesso!');
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        const message = error.response.data.message;
-        toast.error(message);
-        setError(message);
-      } else {
-        toast.error('Algo deu errado.');
-        setError('Algo deu errado.');
-      }
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (data: VehicleFormValue) => {
+    console.log(data);
   };
 
   return (
@@ -83,7 +54,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
         <div className="grid grid-cols-3 gap-8">
           <FormField
             control={form.control}
-            name="nome"
+            name="modelo"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -98,7 +69,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
               </FormItem>
             )}
           />
-          {/* <FormField
+          <FormField
             control={form.control}
             name="preco"
             render={({ field }) => (
@@ -149,7 +120,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
                 <FormMessage />
               </FormItem>
             )}
-          /> 
+          />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -201,7 +172,7 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
                 </FormItem>
               )}
             />
-          </div>*/}
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -210,62 +181,119 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
                 <FormItem>
                   <FormControl>
                     <Select
-                      disabled={loading}
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder="Selecione"
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {brands.map((brand) => (
-                          <SelectItem key={brand.id} value={String(brand.id)}>
-                            {brand.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      styles={{
+                        control: (baseStyles) => ({
+                          ...baseStyles,
+                          borderWidth: '2px',
+                          borderRadius: '4px',
+                          borderColor: '#6B737A',
+                          fontSize: '14px',
+                          '&:hover': {
+                            borderColor: '#6B737A',
+                          },
+                        }),
+                        placeholder: (baseStyles) => ({
+                          ...baseStyles,
+                          color: '#111827',
+                        }),
+                        option: (baseStyles, state) => ({
+                          ...baseStyles,
+                          fontSize: '14px',
+                          background: state.isSelected ? '#4880FF' : '#FFFFFF',
+                          borderRadius: '0px',
+                          borderBottom: '1px solid #6B737A',
+                          transition: '.3s',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            background: '#d1dbe4',
+                            color: 'black',
+                          },
+                        }),
+                        clearIndicator: (baseStyles) => ({
+                          ...baseStyles,
+                          transition: '.3s',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'red',
+                          },
+                        }),
+                      }}
+                      isClearable
+                      placeholder="Selecione a marca"
+                      isDisabled={loading}
+                      value={brands.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val?.value)}
+                      options={brands}
+                      id="marca"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="opcional"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl></FormControl>
+                  <FormControl>
+                    <Select
+                      styles={{
+                        control: (baseStyles) => ({
+                          ...baseStyles,
+                          borderWidth: '2px',
+                          borderRadius: '4px',
+                          borderColor: '#6B737A',
+                          fontSize: '14px',
+                          '&:hover': {
+                            borderColor: '#6B737A',
+                          },
+                        }),
+                        placeholder: (baseStyles) => ({
+                          ...baseStyles,
+                          color: '#111827',
+                        }),
+                        option: (baseStyles, state) => ({
+                          ...baseStyles,
+                          fontSize: '14px',
+                          background: state.isSelected ? '#4880FF' : '#FFFFFF',
+                          borderRadius: '0px',
+                          borderBottom: '1px solid #6B737A',
+                          transition: '.3s',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            background: '#d1dbe4',
+                            color: 'black',
+                          },
+                        }),
+                        clearIndicator: (baseStyles) => ({
+                          ...baseStyles,
+                          transition: '.3s',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'red',
+                          },
+                        }),
+                      }}
+                      isMulti
+                      isClearable
+                      placeholder="Selecione a marca"
+                      isDisabled={loading}
+                      value={optionals.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val?.value)}
+                      options={optionals}
+                      id="marca"
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
           </div>
         </div>
-        <div className="relative">
-          {loading ? (
-            <Button
-              disabled={loading}
-              type="submit"
-              className="w-[160px] bg-custom-primary"
-            >
-              Cadastrando...
-            </Button>
-          ) : (
-            <Button type="submit" className="w-[160px] bg-custom-primary">
-              Cadastrar
-            </Button>
-          )}{' '}
-          <p className="text-red-500 absolute w-max text-sm -bottom-6">
-            {error}
-          </p>
-        </div>
+        <Button disabled={loading} className="ml-auto" type="submit">
+          Cadastrar
+        </Button>
       </form>
     </Form>
   );

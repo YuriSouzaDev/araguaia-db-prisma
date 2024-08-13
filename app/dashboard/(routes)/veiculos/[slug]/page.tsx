@@ -1,11 +1,20 @@
-'use client';
-
+import getBrands from '@/actions/get-brands';
+import getOptinals from '@/actions/get-optionals';
 import VehicleBreadcrumb from './components/VehicleBreadcrumb';
 import VehicleForm from './components/VehicleForm';
 
 export const runtime = 'edge';
+export const revalidate = 0;
 
-const VehiclePage = () => {
+const VehiclePage = async () => {
+  const brands = await getBrands();
+  const optionals = await getOptinals();
+
+  const brandOptions = brands.map((brand) => ({
+    value: String(brand.id),
+    label: brand.name,
+  }));
+
   return (
     <div className="animate-fadeIn">
       <div className="flex justify-between items-center mb-5">
@@ -14,7 +23,7 @@ const VehiclePage = () => {
         </h1>
         <VehicleBreadcrumb />
       </div>
-      <VehicleForm />
+      <VehicleForm brands={brands} />
     </div>
   );
 };
