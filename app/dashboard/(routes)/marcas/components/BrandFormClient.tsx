@@ -114,6 +114,7 @@ const BrandFormClient = () => {
                     )}
                     <Input
                       type="file"
+                      multiple
                       disabled={loading}
                       onChangeCapture={() => setError('')}
                       className={cn(

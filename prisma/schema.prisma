@@ -50,10 +50,20 @@ model Vehicle {
   brandId          Int
   brand            Brand      @relation(fields: [brandId], references: [id])
   optionals        Optional[] @relation("VehicleOptionals")
+  Images           Image[]
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
+}
 
-  @@index([brandId])
+model Image {
+  id        Int      @id @default(autoincrement())
+  vehicleId Int
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([vehicleId])
 }
 
 model User {

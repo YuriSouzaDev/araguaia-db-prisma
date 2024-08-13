@@ -2,6 +2,17 @@ import { z } from 'zod';
 
 export const formVehicleSchema = z.object({
   nome: z.string().min(2).max(100),
+  marca: z.string().min(1).max(20),
+  images: z
+    .array(
+      z
+        .instanceof(File)
+        .refine(
+          (file) => file.size < 2 * 1024 * 1024,
+          'File size must be less than 2MB',
+        ),
+    )
+    .min(1, 'At least 1 file is required'),
   // imagens: z
   //   .array(
   //     z
@@ -22,7 +33,6 @@ export const formVehicleSchema = z.object({
   // cor: z.string().min(2).max(9),
   // anoFabricacao: z.string().min(4),
   // anoModelo: z.string().min(4),
-  marca: z.string().min(1).max(20),
   // opcional: z.array(z.object({ name: z.string().min(2).max(50) })).optional(),
   // quilometragem: z.string().min(2).max(9),
   // cambio: z.string().min(2).max(20),

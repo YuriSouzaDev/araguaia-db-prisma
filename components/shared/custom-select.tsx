@@ -11,6 +11,7 @@ interface CustomSelectProps {
   placeholder: string;
   id: string;
   data: DataSelect[];
+  name: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -18,6 +19,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   data,
   id,
   loading,
+  name,
   ...props
 }) => {
   const [selectedOption, setSelectedOption] =
@@ -69,6 +71,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       onChange={setSelectedOption}
       options={data}
       inputId={id}
+      name={name}
       {...props}
     />
   );
