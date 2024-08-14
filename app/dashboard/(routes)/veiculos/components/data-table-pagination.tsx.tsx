@@ -25,8 +25,11 @@ const DataTablePagination = <TData,>({
     const { pageIndex, pageSize } = table.getState().pagination;
     const totalDisplayed = (pageIndex + 1) * pageSize;
     setTotalItemsDisplayed(totalDisplayed);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getState().pagination.pageIndex,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getState().pagination.pageSize,
   ]);
 
