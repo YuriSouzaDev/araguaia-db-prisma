@@ -5,7 +5,7 @@ import { Optional, Prisma } from '@prisma/client';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export const capitalize = (str: string) => {
+const capitalize = (str: string) => {
   if (str.length === 0) return str;
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };

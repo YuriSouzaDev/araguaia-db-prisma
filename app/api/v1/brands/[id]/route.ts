@@ -5,10 +5,14 @@ import { Brand } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { capitalize } from '../../optionals/route';
 
 type FindById = {
   id: string;
+};
+
+const capitalize = (str: string) => {
+  if (str.length === 0) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
 export async function GET(request: Request, context: { params: FindById }) {
