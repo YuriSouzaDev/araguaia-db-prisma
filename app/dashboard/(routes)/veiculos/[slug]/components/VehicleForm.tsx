@@ -97,12 +97,11 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
         },
       });
 
-      if (response.status === 200) {
-        router.refresh();
-        form.reset();
-        setImageUrls([]);
-        toast.success('Veículo criado com sucesso!');
-      }
+      router.push('/dashboard/veiculos');
+      router.refresh();
+      form.reset();
+      setImageUrls([]);
+      toast.success('Veículo criado com sucesso!');
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         const message = error.response.data.message;

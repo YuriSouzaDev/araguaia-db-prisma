@@ -8,7 +8,7 @@ const Vehicles = async () => {
     orderBy: {
       updatedAt: 'desc',
     },
-    include: { createdBy: true, lastModifiedBy: true },
+    include: { createdBy: true, lastModifiedBy: true, brand: true },
   });
 
   const formattedBanners: VehicleColumn[] = brands.map((item) => ({
@@ -16,6 +16,7 @@ const Vehicles = async () => {
     name: item.name,
     updatedAt: format(item.updatedAt, 'dd/MM/yyyy'),
     createdAt: format(item.createdAt, 'dd/MM/yyyy'),
+    brandName: item.brand.name,
     lastModifiedByName: item.lastModifiedBy?.name || 'Desconhecido',
   }));
 

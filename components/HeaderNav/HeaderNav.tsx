@@ -16,9 +16,6 @@ const HeaderNav = async () => {
             <p className="text-sm text-custom-textBlack font-bold">
               {`${data?.name} ${data?.lastName}`}
             </p>
-            <span className="text-xs text-custom-textBlack font-semibold capitalize">
-              {data?.role}
-            </span>
           </div>
         )}
       </div>

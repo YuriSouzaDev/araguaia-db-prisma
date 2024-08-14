@@ -73,9 +73,7 @@ export async function POST(request: Request) {
         name: nome,
         Images: {
           createMany: {
-            data: imageUrls.map((image) => ({
-              url: image.url,
-            })),
+            data: [...imageUrls.map((image: { url: string }) => image)],
           },
         },
         brandId: +marca,
