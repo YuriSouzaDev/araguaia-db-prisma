@@ -8,7 +8,7 @@ export interface InputWithLabelProps
   id?: string;
   multiple?: boolean;
   loading?: boolean;
-  name: string;
+  name?: string;
 }
 
 const InputWithLabel = React.forwardRef<HTMLInputElement, InputWithLabelProps>(

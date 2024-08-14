@@ -1,5 +1,5 @@
 import BrandBreadcrumb from './BrandBreadcrumb';
-import { BrandColumn, vehicleColumns } from './columns';
+import { BrandColumn, brandColumns } from './columns';
 import { DataTableBrands } from './data-table-brands';
 
 interface BrandClientProps {
@@ -15,7 +15,7 @@ const BrandClient: React.FC<BrandClientProps> = ({ data }) => {
         </h1>
         <BrandBreadcrumb />
       </div>
-      <DataTableBrands columns={vehicleColumns} data={data} searchKey="name" />
+      <DataTableBrands columns={brandColumns} data={data} searchKey="name" />
     </div>
   );
 };
