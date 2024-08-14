@@ -1,7 +1,6 @@
 'use client';
 
 import { AlertModal } from '@/components/modals/alert-modal';
-import { EditBrandModal } from '@/components/modals/edit-brand-modal';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,10 +14,10 @@ import axios from 'axios';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { BrandColumn } from './columns';
+import { VehicleColumn } from './columns';
 
 interface CellActionProps {
-  data: BrandColumn;
+  data: VehicleColumn;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -31,11 +30,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      const imageUrl = data.imageUrl;
-      const key = imageUrl ? imageUrl.split('/').pop() : undefined;
-      if (key) {
-        await handleRemove(key);
-      }
       await axios.delete(`/api/v1/brands/${data.id}`);
       router.refresh();
       // toast.success('Cor deletada.');
@@ -68,14 +62,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           onClose={() => setOpen(false)}
           onConfirm={onDelete}
           loading={loading}
-        />
-      )}
-      {openEdit && (
-        <EditBrandModal
-          data={data}
-          isOpen={openEdit}
-          onClose={() => setOpenEdit(false)}
-          onConfirm={() => {}}
         />
       )}
       <div>
