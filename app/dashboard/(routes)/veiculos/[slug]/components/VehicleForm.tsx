@@ -25,7 +25,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Brand } from '@prisma/client';
 import axios from 'axios';
-import { Trash, Upload } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -156,19 +156,21 @@ const VehicleForm: React.FC<VehicleFormProps> = ({ brands }) => {
                                 className="relative w-[100px] h-[100px] rounded-md overflow-hidden"
                                 key={index}
                               >
-                                <div className="z-10 absolute top-2 right-2">
+                                <div className="z-10 absolute top-1 right-1">
                                   <Button
                                     variant="destructive"
-                                    size="icon"
+                                    size="iconmd"
                                     type="button"
                                     onClick={() => removeImage(index, field)}
                                   >
-                                    <Trash className="h-4 w-4" />
+                                    <X className="h-4 w-4" />
                                   </Button>
                                 </div>
                                 <Image
                                   className="absolute justify-center items-center h-full w-full gap-3 rounded-md object-cover"
-                                  fill
+                                  width={2400}
+                                  height={1600}
+                                  sizes="100vw"
                                   src={url}
                                   alt={`uploaded ${index}`}
                                 />
