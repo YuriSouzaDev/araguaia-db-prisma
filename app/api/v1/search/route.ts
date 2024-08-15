@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
@@ -44,6 +44,7 @@ export async function GET(req: NextRequest) {
       include: {
         brand: true,
         optionals: true,
+        Images: true,
       },
     });
 

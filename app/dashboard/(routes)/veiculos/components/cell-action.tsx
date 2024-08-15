@@ -14,6 +14,7 @@ import axios from 'axios';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { VehicleColumn } from './columns';
 
 interface CellActionProps {
@@ -30,9 +31,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/v1/brands/${data.id}`);
+      await axios.delete(`/api/v1/vehicles/${data.id}`);
       router.refresh();
-      // toast.success('Cor deletada.');
+      toast.success('Veículo deletado');
     } catch (error) {
       // toast.error(
       //   'Tenha certeza que você deletou todos os produtos que usam essa cor primeiro.'
