@@ -20,7 +20,7 @@ const InputWithLabel = React.forwardRef<HTMLInputElement, InputWithLabelProps>(
           name={name}
           type={type}
           className={cn(
-            'peer w-full border-2 border-custom-borderLight placeholder:text-transparent bg-white rounded-[4px] py-2 px-4 focus-visible:outline-custom-primary text-sm  disabled:border-slate-400 disabled:bg-white disabled:text-slate-400',
+            'peer w-full border-2 border-custom-borderLight placeholder:text-transparent bg-white rounded-[4px] py-2 px-4 focus-visible:outline-custom-primary text-sm hover:border-custom-primary disabled:border-slate-400 disabled:bg-white disabled:text-slate-400',
             loading && 'cursor-not-allowed ',
             className,
           )}

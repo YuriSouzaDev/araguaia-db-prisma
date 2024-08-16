@@ -91,3 +91,9 @@ input:-webkit-autofill {
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #fff;
 }
+
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0 !important;
+  margin-top: calc(0rem * calc(1 - var(--tw-space-y-reverse))) !important;
+  margin-bottom: calc(0rem * var(--tw-space-y-reverse)) !important;
+}

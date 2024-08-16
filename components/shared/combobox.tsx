@@ -26,28 +26,10 @@ import {
 import { cn } from '@/lib/utils';
 import { UseFormReturn } from 'react-hook-form';
 
-const frameworks = [
-  {
-    value: '1',
-    label: 'Ford',
-  },
-  {
-    value: '2',
-    label: 'Honda',
-  },
-  {
-    value: '3',
-    label: 'Honda',
-  },
-  {
-    value: '5',
-    label: 'BMW',
-  },
-  {
-    value: '6',
-    label: 'Jeep',
-  },
-];
+interface DataType {
+  value: string;
+  label: string;
+}
 
 interface ComboboxProps {
   form: UseFormReturn<any> | null;
@@ -55,6 +37,7 @@ interface ComboboxProps {
   name: string;
   noResult: string;
   disabled: boolean;
+  data: DataType[];
 }
 
 export const Combobox: React.FC<ComboboxProps> = ({
@@ -63,6 +46,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   name,
   noResult,
   disabled,
+  data,
 }) => {
   if (!form) {
     return null;
@@ -81,14 +65,12 @@ export const Combobox: React.FC<ComboboxProps> = ({
                   variant="outline"
                   role="combobox"
                   className={cn(
-                    'w-full justify-between border-2 border-custom-borderLight text-sm disabled:border-slate-400 disabled:bg-white disabled:text-slate-400 hover:border-custom-primary hover:bg-transparent disabled:opacity-100',
+                    'w-full justify-between border-2 border-custom-borderLight text-sm disabled:border-slate-400 disabled:bg-white disabled:text-slate-400 hover:border-custom-primary hover:bg-transparent disabled:opacity-100 cursor-text',
                     !field.value && 'border-2 border-custom-borderLight',
                   )}
                 >
                   {field.value
-                    ? frameworks.find(
-                        (framework) => framework.value === field.value,
-                      )?.label
+                    ? data.find((item) => item.value === field.value)?.label
                     : placeholder}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -100,23 +82,23 @@ export const Combobox: React.FC<ComboboxProps> = ({
                 <CommandList>
                   <CommandEmpty>{noResult}</CommandEmpty>
                   <CommandGroup>
-                    {frameworks.map((framework) => (
+                    {data.map((item) => (
                       <CommandItem
-                        value={framework.label}
-                        key={framework.value}
+                        value={item.label}
+                        key={item.value}
                         onSelect={() => {
-                          form.setValue(name, framework.value);
+                          form.setValue(name, item.value);
                         }}
                       >
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',
-                            framework.value === field.value
+                            item.value === field.value
                               ? 'opacity-100'
                               : 'opacity-0',
                           )}
                         />
-                        {framework.label}
+                        {item.label}
                       </CommandItem>
                     ))}
                   </CommandGroup>

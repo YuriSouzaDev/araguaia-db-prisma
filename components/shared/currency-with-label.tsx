@@ -8,11 +8,12 @@ export interface CurrencyWithLabelProps
   id: string;
   className?: string;
   decimalScale?: number;
-  value?: string | number;
-  onValueChange?: (value: string | number) => void;
+  value?: string;
+  onValueChange?: (value: string) => void;
   loading: boolean;
   isAllowed?: (values: any) => boolean;
   thousandSeparator?: string;
+  span?: string;
 }
 
 const CurrencyWithLabel = React.forwardRef<
@@ -30,6 +31,7 @@ const CurrencyWithLabel = React.forwardRef<
       onValueChange,
       isAllowed,
       thousandSeparator = '.',
+      span = ' *',
     },
     ref,
   ) => {
@@ -37,6 +39,7 @@ const CurrencyWithLabel = React.forwardRef<
       <div className="relative">
         <NumericFormat
           value={value}
+          allowLeadingZeros
           onValueChange={({ value }) => onValueChange && onValueChange(value)}
           allowNegative={false}
           decimalSeparator=","
@@ -48,7 +51,7 @@ const CurrencyWithLabel = React.forwardRef<
           id={id}
           disabled={loading}
           className={cn(
-            'peer w-full border-2 border-custom-borderLight placeholder:text-transparent bg-white rounded-[4px] py-2 px-4 focus-visible:outline-custom-primary text-sm disabled:border-slate-400 disabled:bg-white disabled:text-slate-400',
+            'peer w-full border-2 border-custom-borderLight placeholder:text-transparent bg-white rounded-[4px] py-2 px-4 focus-visible:outline-custom-primary text-sm disabled:border-slate-400 disabled:bg-white disabled:text-slate-400 hover:border-custom-primary',
             loading && 'cursor-not-allowed ',
             className,
           )}
@@ -59,7 +62,8 @@ const CurrencyWithLabel = React.forwardRef<
           className="absolute left-0 -translate-y-2 ml-4 bg-white px-1 text-xs leading-4 duration-100 ease-linear peer-placeholder-shown:translate-y-[6px] peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[28px] peer-placeholder-shown:text-gray-900 peer-focus:ml-4 peer-focus:-translate-y-2 peer-focus:px-1 peer-focus:text-xs peer-focus-visible:text-custom-primary peer-invalid:-translate-y-0 peer-disabled:text-slate-400"
           htmlFor={id}
         >
-          {label} <span className="text-sm text-red-500">*</span>
+          {label}
+          <span className="text-sm text-red-500">{span}</span>
         </label>
       </div>
     );
