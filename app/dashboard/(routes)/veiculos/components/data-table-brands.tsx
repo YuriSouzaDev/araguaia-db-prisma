@@ -22,18 +22,19 @@ import {
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import DataTablePagination from './data-table-pagination.tsx';
+import VehicleDrawer from './vehicle-drawer';
 
-interface DataTableBrandsProps<TData, TValue> {
+interface DataTableVehiclesProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchKey: string;
 }
 
-export function DataTableBrands<TData, TValue>({
+export function DataTableVehicles<TData, TValue>({
   columns,
   data,
   searchKey,
-}: DataTableBrandsProps<TData, TValue>) {
+}: DataTableVehiclesProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -48,6 +49,8 @@ export function DataTableBrands<TData, TValue>({
     },
   });
 
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   return (
     <div className="px-2 bg-white rounded-md">
       <div className="flex items-center pt-4 pb-10 flex-col-reverse gap-4 1250:gap-0 1250:justify-between 1250:flex-row">
@@ -61,7 +64,7 @@ export function DataTableBrands<TData, TValue>({
         />
         <NewItemButton
           label="Adicionar Veículo"
-          push={`/dashboard/veiculos/novo`}
+          onClick={() => setOpenDrawer(true)}
         />
       </div>
       <div className="rounded-md border bg-white h-[calc(100vh-380px)] overflow-auto scrollbar">
@@ -120,6 +123,10 @@ export function DataTableBrands<TData, TValue>({
         </ScrollArea>
       </div>
       <DataTablePagination table={table} />
+      <VehicleDrawer
+        openDrawer={openDrawer}
+        closeDrawer={() => setOpenDrawer(false)}
+      />
     </div>
   );
 }
